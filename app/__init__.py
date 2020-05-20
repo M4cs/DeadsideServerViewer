@@ -44,8 +44,11 @@ def create_table():
     return tables
 
 def update_cache():
+    old_tables = m.tables
     m.tables = create_table()
-    print(m.tables[0])
+    if len(m.tables) == 0:
+        m.tables = old_tables
+    
     
 update_cache()
 
