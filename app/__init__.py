@@ -45,11 +45,13 @@ def create_table():
 
 def update_cache():
     m.tables = create_table()
+    print(m.tables[0])
     
 update_cache()
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=update_cache, trigger="interval", seconds=60)
+scheduler.start()
 
 @app.route('/')
 def index():
