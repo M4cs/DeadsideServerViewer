@@ -138,7 +138,6 @@ def search():
     res = []
     for result in results:
         res.append(result[0])
-    print(res)
     tables = []
     template = """
                 <tr>

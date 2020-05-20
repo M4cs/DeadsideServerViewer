@@ -1,6 +1,5 @@
 import requests, json, time
 from datetime import timedelta
-from ip2geotools.databases.noncommercial import DbIpCity
 class MemServer:
     def __init__(self):
         self.serverlist = []
@@ -34,7 +33,6 @@ class Servers:
             else:
                 x.append(s)
         for i in x:
-            print(int(100 * float(i['players'])/float(i['playersmax'])))
             i['ratio_num'] = 100 * float(i['players'])/float(i['playersmax'])
         return sorted(x, key = lambda i: i['players'], reverse=True)
     
