@@ -69,13 +69,17 @@
                         <th>Server Title</th>
                         {% if filter == "uptime" %}
                         <th><a href="https://deadsidesv.com/?filter=-uptime">Uptime 🠕</a></th>
-                        {% else %}
+                        {% elif filter == "-uptime" %}
                         <th><a href="https://deadsidesv.com/?filter=uptime">Uptime 🠗</a></th>
+                        {% else %}
+                        <th><a href="https://deadsidesv.com/?filter=uptime">Uptime</a></th>
                         {% endif %}
                         {% if filter == "players" %}
                         <th><a href="https://deadsidesv.com/?filter=-players">Players Online 🠕</a></th>
-                        {% else %}
+                        {% elif filter == "-players" %}
                         <th><a href="https://deadsidesv.com/?filter=players">Players Online 🠗</a></th>
+                        {% else %}
+                        <th><a href="https://deadsidesv.com/?filter=players">Players Online</a></th>
                         {% endif %}
                         <th>Max Players</th>
                         <th>IP Address</th>

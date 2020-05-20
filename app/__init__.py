@@ -11,6 +11,7 @@ m = MemServer()
 def search_parser():
     parser = reqparse.RequestParser()
     parser.add_argument('q')
+    parser.add_argument('filter')
     return parser
 
 def filter_parser():
@@ -67,8 +68,6 @@ def index():
     args = parser.parse_args()
     if args['filter'] != "+players":
         serverlist = Servers.populate_filter(m.serverlist, args['filter'])
-        print("Made Serverlist")
-        print(serverlist[0])
         tables = []
         template = """
                 <tr>
@@ -138,4 +137,4 @@ def search():
             if uptime.endswith(','):
                 uptime = uptime[0:-1]
             tables.append(template.format(index=index, name=server['id'].replace('_', ' ').replace('*', ''), uptime=uptime, online=server['players'], max=server['playersmax'], ip=server['addr']))
-    return render_template('index.html', tables=tables), 200
+    return render_template('index.html', tables=tables, filter=args['filter']), 200
