@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html style="background-color: #363636;">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Deadside Server Viewer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  </head>
+  <body>
+    <section class="hero is-dark is-medium">
+        <div class="hero-head">
+            <div class="container">
+                <a href="/">
+                    <img src="assets/logo.png" alt="logo" width="175px" height="83px">
+                </a>
+            </div>
+        </div>
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h2 class="title">
+                    View What Servers Are Online Right Now Without Logging Into The Game!
+                </h2>
+                <p class="subtitle">
+                    Updated every minute. Not officially affiliated with Deadside!
+                </p>
+                <p class="subtitle">Created by <a href="https://twitter.com/maxbridgland">@maxbridgland</a></p>
+            </div>
+        </div>
+        <div class="hero-foot">
+            
+        </div>
+    </section>
+    <section class="hero is-dark">
+        <div class="hero-body">
+            <form action="/search" method="GET">
+                <div class="field has-addons">
+                    <div class="control" style="width: 100%;">
+                      <input class="input" type="text" placeholder="Search For A Server" name="q">
+                    </div>
+                    <div class="control" >
+                      <button type="submit" class="button is-light">
+                        Search
+                      </button>
+                    </div>
+                  </div>
+            </form> 
+            <br>
+            <table class="table" width="100%">
+                <thead>
+                    <tr>
+                        <th>Server Rank</th>
+                        <th>Server Title</th>
+                        <th>Uptime</th>
+                        <th>Players Online</th>
+                        <th>Max Players</th>
+                        <th>IP Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for table in tables %}
+                        {{table | safe}}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <footer class="footer">
+        <div class="content has-text-centered">
+          <p>
+            <strong>Deadside Server Viewer</strong> by <a href="https://github.com/M4cs">Max Bridgland</a>. The Deadside Logo and all names are trademarks of Bad Pixel.
+          </p>
+        </div>
+      </footer>
+  </body>
+</html>
