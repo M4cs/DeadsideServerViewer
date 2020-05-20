@@ -14,6 +14,11 @@ def search_parser():
     parser.add_argument('filter')
     return parser
 
+OFFSET = ord('🇦') - ord('A')
+
+def flag(code):
+    return chr(ord(code[0]) + OFFSET) + chr(ord(code[1]) + OFFSET)
+
 def filter_parser():
     parser = reqparse.RequestParser()
     parser.add_argument('filter')
@@ -31,6 +36,7 @@ def create_table():
                     <td>{online}</td>
                     <td>{max}</td>
                     <td>{ip}</td>
+                    <td><img src="https://localhost:5000{ratio}"></td>
                 </tr>"""
     for index, server in enumerate(m.serverlist):
         index += 1
@@ -46,7 +52,17 @@ def create_table():
         if uptime.endswith(','):
             uptime = uptime[0:-1]
         m.titles.append(server['id'])
-        tables.append(template.format(index=index, name=server['id'].replace('_', ' ').replace('*', ''), uptime=uptime, online=server['players'], max=server['playersmax'], ip=server['addr']))
+        if server['ratio_num'] == 100:
+            ratio = "/assets/full.png"
+        elif server['ratio_num'] <= 99 and server['ratio_num'] >= 76:
+            ratio = "/assets/medium.png"
+        elif server['ratio_num'] <= 75 and server['ratio_num'] >= 46:
+            ratio = "/assets/good.png"
+        elif server['ratio_num'] <= 45 and server['ratio_num'] > 0:
+            ratio = "/assets/low.png"
+        else:
+            ratio = "/assets/empty.png"
+        tables.append(template.format(index=index, name=server['id'].replace('_', ' ').replace('*', ''), uptime=uptime, online=server['players'], max=server['playersmax'], ip=server['addr'], ratio=ratio))
     return tables
 
 def update_cache():
@@ -77,6 +93,7 @@ def index():
                     <td>{online}</td>
                     <td>{max}</td>
                     <td>{ip}</td>
+                    <td><img src="{ratio}"></td>
                 </tr>"""
         for index, server in enumerate(serverlist):
             index += 1
@@ -91,8 +108,18 @@ def index():
             uptime = uptime.strip()
             if uptime.endswith(','):
                 uptime = uptime[0:-1]
+            if server['ratio_num'] >= 100:
+                ratio = "/assets/full.png"
+            elif server['ratio_num'] <= 99 and server['ratio_num'] >= 76:
+                ratio = "/assets/medium.png"
+            elif server['ratio_num'] <= 75 and server['ratio_num'] >= 46:
+                ratio = "/assets/good.png"
+            elif server['ratio_num'] <= 45 and server['ratio_num'] > 0:
+                ratio = "/assets/low.png"
+            else:
+                ratio = "/assets/empty.png"
             m.titles.append(server['id'])
-            tables.append(template.format(index=index, name=server['id'].replace('_', ' ').replace('*', ''), uptime=uptime, online=server['players'], max=server['playersmax'], ip=server['addr']))
+            tables.append(template.format(index=index, name=server['id'].replace('_', ' ').replace('*', ''), uptime=uptime, online=server['players'], max=server['playersmax'], ip=server['addr'], ratio=ratio))
         return render_template('index.html', tables=tables, filter=args['filter']), 200
     else:
         return render_template('index.html', tables=m.tables, filter=args['filter']), 200
