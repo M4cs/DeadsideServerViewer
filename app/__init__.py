@@ -97,6 +97,5 @@ def search():
             uptime = uptime.strip()
             if uptime.endswith(','):
                 uptime = uptime[0:-1]
-            m.titles.append(server['id'].replace('*', ' ').replace('_', ' '))
             tables.append(template.format(index=index, name=server['id'].replace('_', ' ').replace('*', ''), uptime=uptime, online=server['players'], max=server['playersmax'], ip=server['addr']))
     return render_template('index.html', tables=tables), 200
