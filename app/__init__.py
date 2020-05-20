@@ -13,9 +13,14 @@ def search_parser():
     parser.add_argument('q')
     return parser
 
+def filter_parser():
+    parser = reqparse.RequestParser()
+    parser.add_argument('filter')
+    return parser
+
 def create_table():
     m.titles = []
-    serverlist = Servers.populate()
+    m.serverlist = Servers.populate()
     tables = []
     template = """
                 <tr>
@@ -26,7 +31,7 @@ def create_table():
                     <td>{max}</td>
                     <td>{ip}</td>
                 </tr>"""
-    for index, server in enumerate(serverlist):
+    for index, server in enumerate(m.serverlist):
         index += 1
         days, hours, minutes = MemServer.days_hours_minutes(server['starttime'])
         uptime = ""
@@ -58,8 +63,40 @@ scheduler.start()
 
 @app.route('/')
 def index():
-    print(len(m.tables))
-    return render_template('index.html', tables=m.tables), 200
+    parser = filter_parser()
+    args = parser.parse_args()
+    if args['filter'] != "+players":
+        serverlist = Servers.populate_filter(m.serverlist, args['filter'])
+        print("Made Serverlist")
+        print(serverlist[0])
+        tables = []
+        template = """
+                <tr>
+                    <th>{index}</th>
+                    <td>{name}</td>
+                    <td>{uptime}</td>
+                    <td>{online}</td>
+                    <td>{max}</td>
+                    <td>{ip}</td>
+                </tr>"""
+        for index, server in enumerate(serverlist):
+            index += 1
+            days, hours, minutes = MemServer.days_hours_minutes(server['starttime'])
+            uptime = ""
+            if int(days) > 0:
+                uptime = days + " days "
+            if int(hours) > 0:
+                uptime = uptime + hours + " hrs. "
+            if int(minutes) > 0:
+                uptime = uptime + minutes + " min."
+            uptime = uptime.strip()
+            if uptime.endswith(','):
+                uptime = uptime[0:-1]
+            m.titles.append(server['id'])
+            tables.append(template.format(index=index, name=server['id'].replace('_', ' ').replace('*', ''), uptime=uptime, online=server['players'], max=server['playersmax'], ip=server['addr']))
+        return render_template('index.html', tables=tables, filter=args['filter']), 200
+    else:
+        return render_template('index.html', tables=m.tables, filter=args['filter']), 200
     
 @app.route('/assets/<file>')
 def serve(file):

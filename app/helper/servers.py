@@ -2,6 +2,7 @@ import requests, json, time
 from datetime import timedelta
 class MemServer:
     def __init__(self):
+        self.serverlist = []
         self.tables = []
         self.titles = []
     
@@ -32,3 +33,22 @@ class Servers:
             else:
                 x.append(s)
         return sorted(x, key = lambda i: i['players'], reverse=True)
+    
+    @staticmethod
+    def populate_filter(serverlist, filtertype="+players"):
+        x = []
+        for s in serverlist:
+            if any(d['addr'] == s['addr'] for d in x):
+                pass
+            else:
+                x.append(s)
+        if filtertype == "players":  
+            return sorted(x, key = lambda i: i['players'], reverse=True)
+        elif filtertype == "-players":
+            return sorted(x, key = lambda i: i['players'], reverse=False)
+        elif filtertype == "uptime":
+            return sorted(x, key = lambda i: i['starttime'], reverse=False)
+        elif filtertype == "-uptime":
+            return sorted(x, key = lambda i: i['starttime'], reverse=True)
+        else:
+            return sorted(x, key = lambda i: i['players'], reverse=True)

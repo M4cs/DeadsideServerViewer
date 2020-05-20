@@ -60,15 +60,23 @@
                       </button>
                     </div>
                   </div>
-            </form> 
+            </form>
             <br>
             <table class="table" width="100%">
                 <thead>
                     <tr>
                         <th>Server Rank</th>
                         <th>Server Title</th>
-                        <th>Uptime</th>
-                        <th>Players Online</th>
+                        {% if filter == "uptime" %}
+                        <th><a href="https://deadsidesv.com/?filter=-uptime">Uptime 🠕</a></th>
+                        {% else %}
+                        <th><a href="https://deadsidesv.com/?filter=uptime">Uptime 🠗</a></th>
+                        {% endif %}
+                        {% if filter == "players" %}
+                        <th><a href="https://deadsidesv.com/?filter=-players">Players Online 🠕</a></th>
+                        {% else %}
+                        <th><a href="https://deadsidesv.com/?filter=players">Players Online 🠗</a></th>
+                        {% endif %}
                         <th>Max Players</th>
                         <th>IP Address</th>
                     </tr>
