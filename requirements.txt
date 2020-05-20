@@ -1,0 +1,5 @@
+fuzzywuzzy==0.18.0
+requests==2.20.1
+APScheduler==3.6.1
+Flask==1.1.1
+Flask_RESTful==0.3.7

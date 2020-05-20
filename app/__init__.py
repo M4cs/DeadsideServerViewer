@@ -3,7 +3,6 @@ from flask_restful import reqparse
 from app.helper.servers import Servers, MemServer
 from apscheduler.schedulers.background import BackgroundScheduler
 from fuzzywuzzy import process
-import redis
 import json
 
 app = Flask(__name__)
