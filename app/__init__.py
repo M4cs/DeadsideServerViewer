@@ -39,6 +39,8 @@ def create_table():
                     <td><img src="https://localhost:5000{ratio}"></td>
                 </tr>"""
     for index, server in enumerate(m.serverlist):
+        if server['addr'] == "92.223.66.100:28600":
+            m.sv_info['players'] = server['players']
         index += 1
         days, hours, minutes = MemServer.days_hours_minutes(server['starttime'])
         uptime = ""
@@ -62,6 +64,8 @@ def create_table():
             ratio = "/assets/low.png"
         else:
             ratio = "/assets/empty.png"
+        if server['addr'] == "92.223.66.100:28600":
+            m.sv_info['capacity'] = "https://deadsidesv.com/" + ratio
         tables.append(template.format(index=index, name=server['id'].replace('_', ' ').replace('*', ''), uptime=uptime, online=server['players'], max=server['playersmax'], ip=server['addr'], ratio=ratio))
     return tables
 
@@ -96,6 +100,8 @@ def index():
                     <td><img src="{ratio}"></td>
                 </tr>"""
         for index, server in enumerate(serverlist):
+            if server['addr'] == "92.223.66.100:28600":
+                m.sv_info['players'] = server['players']
             index += 1
             days, hours, minutes = MemServer.days_hours_minutes(server['starttime'])
             uptime = ""
@@ -118,11 +124,13 @@ def index():
                 ratio = "/assets/low.png"
             else:
                 ratio = "/assets/empty.png"
+            if server['addr'] == "92.223.66.100:28600":
+                m.sv_info['capacity'] = "https://deadsidesv.com/" + ratio
             m.titles.append(server['id'])
             tables.append(template.format(index=index, name=server['id'].replace('_', ' ').replace('*', ''), uptime=uptime, online=server['players'], max=server['playersmax'], ip=server['addr'], ratio=ratio))
-        return render_template('index.html', tables=tables, filter=args['filter']), 200
+        return render_template('index.html', tables=tables, filter=args['filter'], sv_players=m.sv_info['players'], sv_capacity=m.sv_info['capacity']), 200
     else:
-        return render_template('index.html', tables=m.tables, filter=args['filter']), 200
+        return render_template('index.html', tables=m.tables, filter=args['filter'], sv_players=m.sv_info['players'], sv_capacity=m.sv_info['capacity']), 200
     
 @app.route('/assets/<file>')
 def serve(file):
@@ -163,4 +171,4 @@ def search():
             if uptime.endswith(','):
                 uptime = uptime[0:-1]
             tables.append(template.format(index=index, name=server['id'].replace('_', ' ').replace('*', ''), uptime=uptime, online=server['players'], max=server['playersmax'], ip=server['addr']))
-    return render_template('index.html', tables=tables, filter=args['filter']), 200
+    return render_template('index.html', tables=tables, filter=args['filter'], sv_players=m.sv_info['players'], sv_capacity=m.sv_info['capacity']), 200

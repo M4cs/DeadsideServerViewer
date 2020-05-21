@@ -5,6 +5,7 @@ class MemServer:
         self.serverlist = []
         self.tables = []
         self.titles = []
+        self.sv_info = {}
     
     @staticmethod
     def days_hours_minutes(up):
