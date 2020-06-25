@@ -128,9 +128,9 @@ def index():
                 m.sv_info['capacity'] = "https://deadsidesv.com/" + ratio
             m.titles.append(server['id'])
             tables.append(template.format(index=index, name=server['id'].replace('_', ' ').replace('*', ''), uptime=uptime, online=server['players'], max=server['playersmax'], ip=server['addr'], ratio=ratio))
-        return render_template('index.html', tables=tables, filter=args['filter'], sv_players=m.sv_info['players'], sv_capacity=m.sv_info['capacity']), 200
+        return render_template('index.html', tables=tables, filter=args['filter']), 200
     else:
-        return render_template('index.html', tables=m.tables, filter=args['filter'], sv_players=m.sv_info['players'], sv_capacity=m.sv_info['capacity']), 200
+        return render_template('index.html', tables=m.tables, filter=args['filter']), 200
     
 @app.route('/assets/<file>')
 def serve(file):
